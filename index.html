@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Play with Delimiter</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: radial-gradient(circle at bottom, #0a0a0a 0%, #000 100%);
+      color: #f5f5f5;
+      font-family: 'Roboto Mono', monospace;
+      overflow-x: hidden;
+      position: relative;
+    }
+    h1 {
+      color: #ffdc00;
+      text-shadow: 0 0 10px #ffdc00;
+      font-weight: 700;
+    }
+    .card {
+      background: rgba(20, 20, 20, 0.85);
+      border: 1px solid #333;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 220, 0, 0.15);
+      height: 100%;
+    }
+    textarea {
+      background-color: #111;
+      color: #fff;
+      border: 1px solid #444;
+    }
+    label, .form-label {
+      color: #ffdc00;
+    }
+    .btn-batman {
+      background-color: #ffdc00;
+      color: #000;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    .btn-batman:hover {
+      background-color: #fff100;
+      transform: scale(1.05);
+    }
+    .output-actions, .input-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      .row-cols-2 > * {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+    }
+    /* Star field */
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    /* Shooting stars */
+    .shooting-star {
+      position: absolute;
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, white, transparent);
+      animation: shoot 5s linear infinite;
+    }
+    @keyframes shoot {
+      0% { transform: translateX(-200px) translateY(0) rotate(45deg); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateX(100vw) translateY(50vh) rotate(45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <h1 class="text-center mb-4">🦇 Play with Delimiter</h1>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <!-- Input Panel -->
+      <div class="col">
+        <div class="card p-3 h-100">
+          <h5 class="text-center mb-3">Input Panel</h5>
+          <label for="inputData" class="form-label">Enter Data</label>
+          <textarea id="inputData" class="form-control mb-3" rows="10" placeholder="Paste your data here... each entry on a new line"></textarea>
+          <div class="row g-2 mb-3">
+            <div class="col-sm-6">
+                <label for="frontDelim" class="form-label">Front Delimiter</label>
+                <input type="text" id="frontDelim" class="form-control" value='"' placeholder='Enter front delimiter'>
+            </div>
+            <div class="col-sm-6">
+                <label for="backDelim" class="form-label">Back Delimiter</label>
+                <input type="text" id="backDelim" class="form-control" value='"' placeholder='Enter back delimiter'>
+            </div>
+        </div>
+          <div class="row g-2 mb-3">
+  <div class="col-sm-6">
+    <label for="separator" class="form-label">Separator</label>
+    <input 
+      type="text" 
+      id="separator" 
+      class="form-control" 
+      value="," 
+      placeholder="e.g. , (comma)">
+  </div>
+
+  <div class="col-sm-6">
+    <label for="spaceReplace" class="form-label">Replace Spaces With</label>
+    <input 
+      type="text" 
+      id="spaceReplace" 
+      class="form-control" 
+      placeholder="e.g. _ (underscore)">
+  </div>
+</div>
+          <div class="mb-3">
+            <label for="caseOption" class="form-label">Case Conversion</label>
+            <select id="caseOption" class="form-select">
+              <option value="none">None</option>
+              <option value="camel">camelCase</option>
+              <option value="snake">snake_case</option>
+              <option value="kebab">kebab-case</option>
+              <option value="pascal">PascalCase</option>
+              <option value="title">Title Case</option>
+              <option value="upper">UPPER CASE</option>
+              <option value="lower">lower case</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Output Mode</label>
+            <select id="outputMode" class="form-select">
+              <option value="single">Single Line</option>
+              <option value="multi">Multi Line</option>
+            </select>
+          </div>
+          <div class="input-actions">
+            <button id="demoBtn" class="btn btn-batman w-100">💡 Load CSV Preset</button>
+          </div>
+        </div>
+      </div>
+      <!-- Output Panel -->
+      <div class="col">
+        <div class="card p-3 h-100">
+          <h5 class="text-center mb-3">Output Panel</h5>
+          <div class="output-actions">
+            <button id="copyBtn" class="btn btn-batman">Copy</button>
+            <button id="downloadBtn" class="btn btn-batman">Download .txt</button>
+            <button id="selectAllBtn" class="btn btn-batman">Select All</button>
+          </div>
+          <textarea id="outputData" class="form-control" rows="16" readonly></textarea>
+        </div>
+      </div><small>Crafted By DD</small>
+    </div>
+    
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    function toCase(str, caseType) {
+      const words = str.toLowerCase().split(/\s+/);
+      switch (caseType) {
+        case 'camel': return words.map((w, i) => i ? w.charAt(0).toUpperCase() + w.slice(1) : w).join('');
+        case 'snake': return words.join('_');
+        case 'kebab': return words.join('-');
+        case 'pascal': return words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+        case 'title': return words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        case 'upper': return str.toUpperCase();
+        case 'lower': return str.toLowerCase();
+        default: return str;
+      }
+    }
+
+    function processInput() {
+      let input = $('#inputData').val().trim();
+      const lines = input.split(/\n+/).filter(Boolean);
+      const front = $('#frontDelim').val();
+      const back = $('#backDelim').val();
+      const sep = $('#separator').val();
+      const mode = $('#outputMode').val();
+      const spaceReplace = $('#spaceReplace').val();
+      const caseOpt = $('#caseOption').val();
+
+      const processed = lines.map(line => {
+        let s = line.trim();
+        if (spaceReplace) s = s.replace(/\s+/g, spaceReplace);
+        s = toCase(s, caseOpt);
+        return front + s + back;
+      });
+
+      let output = mode === 'single' ? processed.join(sep) : processed.join('\n');
+      $('#outputData').val(output);
+    }
+
+    $('#inputData, #frontDelim, #backDelim, #separator, #spaceReplace, #caseOption, #outputMode').on('input change', processInput);
+
+    $('#copyBtn').click(() => {
+      navigator.clipboard.writeText($('#outputData').val());
+      alert('Copied to clipboard!');
+    });
+
+    $('#downloadBtn').click(() => {
+      const blob = new Blob([$('#outputData').val()], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'output.txt';
+      link.click();
+    });
+
+    $('#selectAllBtn').click(() => {
+      $('#outputData').focus().select();
+    });
+
+    $('#demoBtn').click(() => {
+      const csvData = 'apple\nbanana\ncarrot';
+      $('#inputData').val(csvData);
+      processInput();
+    });
+
+    // Add stars and shooting stars
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 2 + 1;
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 5}s`;
+      document.body.appendChild(star);
+    }
+
+    for (let i = 0; i < 3; i++) {
+      const shootingStar = document.createElement('div');
+      shootingStar.className = 'shooting-star';
+      shootingStar.style.top = `${Math.random() * 50}vh`;
+      shootingStar.style.left = `${Math.random() * 50}vw`;
+      shootingStar.style.animationDelay = `${Math.random() * 10}s`;
+      document.body.appendChild(shootingStar);
+    }
+
+    // Load CSV preset by default
+    $(document).ready(() => {
+      $('#inputData').val('apple\nbanana\ncarrot');
+      processInput();
+    });
+  </script>
+</body>
+</html>
